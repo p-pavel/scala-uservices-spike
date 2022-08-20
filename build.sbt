@@ -28,7 +28,7 @@ lazy val worker =
     .dependsOn(`grpc-protocols`, common)
     .settings(
       scalaVersion       := "3.1.3",
-      name               := "spike-client",
+      name               := "spike-worker",
       version            := "0.0.1",
       libraryDependencies ++= scribe ++ grpc,
       dockerBaseImage    := Docker.baseImage,
