@@ -14,7 +14,7 @@ private def mkEchoImpl[F[_]: Scribe: Monad](pingCount: Ref[F, Long]) =
     override def echo(request: MessageName, ctx: Metadata): F[MessageName] =
       for
         cnt <- pingCount.updateAndGet(_ + 1)
-        _   <- Scribe[F].info(s"Echo request count = %cnt").whenA(cnt % 1000 == 0)
+        _   <- Scribe[F].info(s"Echo request count = $cnt").whenA(cnt % 1000 == 0)
       yield MessageName(request.msg.reverse, cnt)
 
 def echoImpl[F[_]: Async: Scribe]: Resource[F, ServerServiceDefinition] =
