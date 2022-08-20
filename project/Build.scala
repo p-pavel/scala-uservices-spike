@@ -1,27 +1,39 @@
 import sbt.*
 
 object Versions {
-  val circeVersion  = "0.14.1"
-  val http4sVersion = "1.0.0-M35"
-  val fs2Version    = "3.2.12"
-  val scribeVersion = "3.10.2"
+  val circe    = "0.14.1"
+  val http4s   = "1.0.0-M35"
+  val fs2      = "3.2.12"
+  val scribe   = "3.10.2"
+  val log4cats = "2.4.0"
 }
 
 object Components {
-  import Versions.*
-  val scribe =
-    Seq("scribe-cats", "scribe-slf4j").map("com.outr" %% _ % scribeVersion)
+  private def artifacts(prefix: String, version: String)(s: String*) =
+    s.map(prefix %% _ % version)
 
-  val grpc =
-    Seq("grpc-netty-shaded", "grpc-services")
-      .map("io.grpc" % _ % scalapb.compiler.Version.grpcJavaVersion)
+  val log4cats = artifacts("org.typelevel", Versions.log4cats)(
+    "log4cats-core",
+    "log4cats-slf4j"
+  )
 
-  val http4s =
-    Seq("http4s-ember-server", "http4s-circe", "http4s-dsl")
-      .map("org.http4s" %% _ % http4sVersion)
+  val scribe   =
+    artifacts("com.outr", Versions.scribe)("scribe-cats", "scribe-slf4j")
 
-  val circe = Seq("circe-core", "circe-generic", "circe-parser")
-    .map("io.circe" %% _ % circeVersion)
+  val grpc     = artifacts("io.grpc", scalapb.compiler.Version.grpcJavaVersion)(
+    "grpc-netty-shaded",
+    "grpc-services"
+  )
+  val http4s   = artifacts("org.http4s", Versions.http4s)(
+    "http4s-ember-server",
+    "http4s-circe",
+    "http4s-dsl"
+  )
 
-  val fs2 = Seq("fs2-core", "fs2-io").map("co.fs2" %% _ % fs2Version)
+  val circe    = artifacts("io.circe", Versions.circe)(
+    "circe-core",
+    "circe-generic",
+    "circe-parser"
+  )
+  val fs2      = artifacts("co.fs2", Versions.fs2)("fs2-core", "fs2-io")
 }
