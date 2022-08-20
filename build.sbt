@@ -1,44 +1,50 @@
 import Components.*
 
-
-lazy val `grpc-protocols` = 
+lazy val `grpc-protocols` =
   project
-  .in(file("grpc"))
-  .enablePlugins( Fs2Grpc)
-  .settings(
-    scalaVersion := "3.1.3",
-    name := "grpc-api",
-    version := "0.0.1"
-  )
+    .in(file("grpc"))
+    .enablePlugins(Fs2Grpc)
+    .settings(
+      scalaVersion := Versions.scala,
+      name         := "grpc-api",
+      version      := "0.0.1"
+    )
 
-lazy val client = 
+lazy val common =
   project
-  .in(file("client")) 
-  .enablePlugins(JavaAppPackaging, DockerPlugin)
-  .dependsOn(`grpc-protocols`)
-  .settings(
-    scalaVersion := "3.1.3",
-    name := "spike-client",
-    version := "0.0.1",
+    .in(file("common"))
+    .dependsOn(`grpc-protocols`)//TODO: strange dependency needed to have fs2.grpc.
+    .settings(
+      scalaVersion := Versions.scala,
+      name         := "common",
+      version      := "0.0.1",
+      libraryDependencies ++= scribe ++ grpc ++  http4s
+    )
 
-    libraryDependencies ++=  scribe ++ grpc,
-
-    dockerBaseImage := Docker.baseImage,
-    dockerExposedPorts := Seq(18080)
-  )
+lazy val worker =
+  project
+    .in(file("worker"))
+    .enablePlugins(JavaAppPackaging, DockerPlugin)
+    .dependsOn(`grpc-protocols`, common)
+    .settings(
+      scalaVersion       := "3.1.3",
+      name               := "spike-client",
+      version            := "0.0.1",
+      libraryDependencies ++= scribe ++ grpc,
+      dockerBaseImage    := Docker.baseImage,
+      dockerExposedPorts := Seq(18080)
+    )
 
 lazy val server =
   project
     .in(file("server"))
     .enablePlugins(JavaAppPackaging, DockerPlugin)
-    .dependsOn(`grpc-protocols`)
+    .dependsOn(`grpc-protocols`, common)
     .settings(
-      scalaVersion := "3.1.3",
-      name := "spike-server",
-      version := "0.0.1",
-
-      dockerBaseImage := Docker.baseImage,
+      scalaVersion       := "3.1.3",
+      name               := "spike-server",
+      version            := "0.0.1",
+      dockerBaseImage    := Docker.baseImage,
       dockerExposedPorts := Seq(8080),
-
-      libraryDependencies ++= circe ++ http4s ++ fs2 ++ scribe ++ grpc
+      libraryDependencies ++= http4s ++ scribe ++ grpc
     )

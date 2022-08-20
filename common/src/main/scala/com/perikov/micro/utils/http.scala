@@ -1,4 +1,4 @@
-package ru.perikov.muServicesSpike.utils
+package com.perikov.micro.utils
 
 object http:
   import com.comcast.ip4s.Literals.ipv4

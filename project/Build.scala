@@ -6,11 +6,11 @@ object Docker {
 }
 
 object Versions {
+  val scala    = "3.1.3"
   val circe    = "0.14.1"
   val http4s   = "1.0.0-M35"
   val fs2      = "3.2.12"
   val scribe   = "3.10.2"
-  val log4cats = "2.4.0"
 }
 
 object Components {

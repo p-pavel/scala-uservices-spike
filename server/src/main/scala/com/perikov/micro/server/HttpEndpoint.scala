@@ -1,4 +1,4 @@
-package ru.perikov.muServicesSpike
+package com.perikov.micro.server
 
 import cats.effect.Async
 import org.http4s.dsl.*
