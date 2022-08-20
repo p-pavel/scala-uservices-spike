@@ -5,6 +5,9 @@ services:
     ports:
       - "8080:8080"
     deploy:
+      restart_policy:
+        condition: always
+        delay: 15s
       resources:
         limits:
           cpus: "2"
@@ -15,6 +18,9 @@ services:
   worker:
     image: spike-worker:0.0.1
     deploy:
+      restart_policy:
+        condition: always
+        delay: 5s
       resources:
         limits:
           cpus: "2"
