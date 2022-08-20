@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+message MessageName {
+    string msg = 1;
+    int64 messageNumber = 2;
+};
+
+service TestService {
+    rpc Echo (MessageName) returns (MessageName);
+};

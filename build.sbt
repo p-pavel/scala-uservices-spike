@@ -1,16 +1,31 @@
 import Components.*
 
-enablePlugins(JavaAppPackaging, DockerPlugin)
+
+lazy val grpc = 
+  project
+  .in(file("grpc"))
+  .enablePlugins( Fs2Grpc)
+  .settings(
+    scalaVersion := "3.1.3",
+    name := "grpc-api",
+    version := "0.0.0.1"
+  )
 
 lazy val root =
   project
     .in(file("."))
+    .enablePlugins(JavaAppPackaging, DockerPlugin)
+    .dependsOn(grpc)
     .settings(
+      scalaVersion := "3.1.3",
       name := "spike",
       version := "0.0.1",
-      dockerExposedPorts := Seq(8080),
+
+      dockerExposedPorts := Seq(8080, 18080),
       dockerBaseImage := "eclipse-temurin:11",
-      scalaVersion := "3.1.3",
+
       libraryDependencies ++= circe ++ http4s ++ fs2 ++ scribe,
-      libraryDependencies += "org.scalatest" %% "scalatest" % "3.2.13" % "test"
+      libraryDependencies += "org.scalatest" %% "scalatest" % "3.2.13" % "test",
+
+      libraryDependencies += "io.grpc" % "grpc-netty-shaded" % scalapb.compiler.Version.grpcJavaVersion
     )
