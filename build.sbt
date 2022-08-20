@@ -24,8 +24,6 @@ lazy val root =
       dockerExposedPorts := Seq(8080, 18080),
       dockerBaseImage := "eclipse-temurin:11",
 
-      libraryDependencies ++= circe ++ http4s ++ fs2 ++ scribe,
+      libraryDependencies ++= circe ++ http4s ++ fs2 ++ scribe ++ Components.grpc,
       libraryDependencies += "org.scalatest" %% "scalatest" % "3.2.13" % "test",
-
-      libraryDependencies += "io.grpc" % "grpc-netty-shaded" % scalapb.compiler.Version.grpcJavaVersion
     )

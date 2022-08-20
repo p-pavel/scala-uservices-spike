@@ -12,7 +12,8 @@ object grpc:
 
     def server[F[_]: Sync](port: Port, services: ServerServiceDefinition*): Resource[F, Server] = 
         import scala.jdk.CollectionConverters.*
-        NettyServerBuilder.forPort(port.value)
+          NettyServerBuilder.forPort(port.value)
+            .addService(io.grpc.protobuf.services.ProtoReflectionService.newInstance())
             .addServices(services.asJava)
             .resource[F]
             .evalMap(server=> Sync[F].delay(server.start))
