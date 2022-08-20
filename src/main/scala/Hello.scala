@@ -15,9 +15,9 @@ def servers[F[_]: Async]
     echo <- echoClient(ipv4"127.0.0.1", port"18080")
   yield (http, grpc, echo)
 
-def callTimes[F[_]: Monad](n: Int, client: EchoClient[F]): F[Unit] =
+def callTimes[F[_]: Monad](n: Long, client: EchoClient[F]): F[Unit] =
   if (n == 0) Monad[F].unit
-  else client.echo("Hello") >> callTimes(n - 1, client)
+  else client.echo("Hello", n) >> callTimes(n - 1, client)
 
 object Hello extends IOApp.Simple:
   scribe.Logger.root.withMinimumLevel(Level.Info).replace()
@@ -29,11 +29,12 @@ object Hello extends IOApp.Simple:
       for
         _     <- IO.println("Got resources. Start calling.")
         start <- IO.realTime
-        numCalls = 100000
+        numCalls = 1000000
         _     <- callTimes(numCalls, echo)
         stop  <- IO.realTime
         duration = stop - start
         _     <- IO.println(s"Done in $duration")
-        _ <- IO.println(s"Call duration: ${duration / numCalls}")
+        _ <- IO.println(s"Call duration: ${duration / numCalls}. Press enter to exit")
+        _ <- IO.readLine
       yield ()
     }
