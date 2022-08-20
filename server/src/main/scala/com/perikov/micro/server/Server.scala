@@ -35,7 +35,7 @@ object Server extends IOApp.Simple:
       for
         _        <- logger.info(s"Got resources. Start issuing $numCalls calls.")
         duration <- callRepeated(numCalls, echo).measureTime
-        _        <- logger.info("Done in $duration")
+        _        <- logger.info(s"Done in $duration")
         _        <- logger.info(s"Call duration: ${duration / numCalls}. Press enter to exit"
                     )
       yield ()
