@@ -20,11 +20,6 @@ object Components {
   private def jArtifacts(prefix: String, version: String)(s: String*) =
     s.map(prefix % _ % version)
 
-  // val log4cats = artifacts("org.typelevel", Versions.log4cats)(
-  //   "log4cats-core",
-  //   "log4cats-slf4j"
-  // )
-
   val scribe =
     artifacts("com.outr", Versions.scribe)("scribe-cats", "scribe-slf4j")
 
