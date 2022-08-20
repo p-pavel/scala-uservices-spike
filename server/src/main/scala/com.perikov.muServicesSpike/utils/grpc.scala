@@ -1,4 +1,4 @@
-package utils
+package ru.perikov.muServicesSpike.utils
 
 object grpc:
     import com.comcast.ip4s.{Port}

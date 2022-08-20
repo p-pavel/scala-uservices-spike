@@ -1,4 +1,9 @@
 import sbt.*
+import sbt.librarymanagement.DependencyBuilders
+
+object Docker {
+  val baseImage = "eclipse-temurin:11-jre"
+}
 
 object Versions {
   val circe    = "0.14.1"
@@ -12,28 +17,31 @@ object Components {
   private def artifacts(prefix: String, version: String)(s: String*) =
     s.map(prefix %% _ % version)
 
-  val log4cats = artifacts("org.typelevel", Versions.log4cats)(
-    "log4cats-core",
-    "log4cats-slf4j"
-  )
+  private def jArtifacts(prefix: String, version: String)(s: String*) =
+    s.map(prefix % _ % version)
 
-  val scribe   =
+  // val log4cats = artifacts("org.typelevel", Versions.log4cats)(
+  //   "log4cats-core",
+  //   "log4cats-slf4j"
+  // )
+
+  val scribe =
     artifacts("com.outr", Versions.scribe)("scribe-cats", "scribe-slf4j")
 
-  val grpc     = artifacts("io.grpc", scalapb.compiler.Version.grpcJavaVersion)(
+  val grpc   = jArtifacts("io.grpc", scalapb.compiler.Version.grpcJavaVersion)(
     "grpc-netty-shaded",
     "grpc-services"
   )
-  val http4s   = artifacts("org.http4s", Versions.http4s)(
+  val http4s = artifacts("org.http4s", Versions.http4s)(
     "http4s-ember-server",
     "http4s-circe",
     "http4s-dsl"
   )
 
-  val circe    = artifacts("io.circe", Versions.circe)(
+  val circe = artifacts("io.circe", Versions.circe)(
     "circe-core",
     "circe-generic",
     "circe-parser"
   )
-  val fs2      = artifacts("co.fs2", Versions.fs2)("fs2-core", "fs2-io")
+  val fs2   = artifacts("co.fs2", Versions.fs2)("fs2-core", "fs2-io")
 }

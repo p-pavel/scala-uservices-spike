@@ -1,29 +1,44 @@
 import Components.*
 
 
-lazy val grpc = 
+lazy val `grpc-protocols` = 
   project
   .in(file("grpc"))
   .enablePlugins( Fs2Grpc)
   .settings(
     scalaVersion := "3.1.3",
     name := "grpc-api",
-    version := "0.0.0.1"
+    version := "0.0.1"
   )
 
-lazy val root =
+lazy val client = 
   project
-    .in(file("."))
+  .in(file("client")) 
+  .enablePlugins(JavaAppPackaging, DockerPlugin)
+  .dependsOn(`grpc-protocols`)
+  .settings(
+    scalaVersion := "3.1.3",
+    name := "spike-client",
+    version := "0.0.1",
+
+    libraryDependencies ++=  scribe ++ grpc,
+
+    dockerBaseImage := Docker.baseImage,
+    dockerExposedPorts := Seq(18080)
+  )
+
+lazy val server =
+  project
+    .in(file("server"))
     .enablePlugins(JavaAppPackaging, DockerPlugin)
-    .dependsOn(grpc)
+    .dependsOn(`grpc-protocols`)
     .settings(
       scalaVersion := "3.1.3",
-      name := "spike",
+      name := "spike-server",
       version := "0.0.1",
 
-      dockerExposedPorts := Seq(8080, 18080),
-      dockerBaseImage := "eclipse-temurin:11",
+      dockerBaseImage := Docker.baseImage,
+      dockerExposedPorts := Seq(8080),
 
-      libraryDependencies ++= circe ++ http4s ++ fs2 ++ scribe ++ Components.grpc,
-      libraryDependencies += "org.scalatest" %% "scalatest" % "3.2.13" % "test",
+      libraryDependencies ++= circe ++ http4s ++ fs2 ++ scribe ++ grpc
     )

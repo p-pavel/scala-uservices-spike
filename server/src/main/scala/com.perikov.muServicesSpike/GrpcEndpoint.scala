@@ -1,6 +1,10 @@
-import cats.effect.{Async, Resource}
-import fs2.grpc.syntax.managedChannelBuilder.*
+package ru.perikov.muServicesSpike
+
 import cats.syntax.functor.*
+import cats.effect.{Async, Resource}
+
+import fs2.grpc.syntax.managedChannelBuilder.*
+
 import Test.*
 
 import io.grpc.{Metadata, ServerServiceDefinition, ManagedChannelBuilder}
