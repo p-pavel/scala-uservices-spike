@@ -11,6 +11,8 @@ object Versions {
   val http4s   = "1.0.0-M35"
   val fs2      = "3.2.12"
   val scribe   = "3.10.2"
+
+  val prometheus = "0.16.0"
 }
 
 object Components {
@@ -39,4 +41,9 @@ object Components {
     "circe-parser"
   )
   val fs2   = artifacts("co.fs2", Versions.fs2)("fs2-core", "fs2-io")
+
+  val prometheus = jArtifacts("io.prometheus", Versions.prometheus)(
+  "simpleclient", 
+  "simpleclient_hotspot",
+  )
 }

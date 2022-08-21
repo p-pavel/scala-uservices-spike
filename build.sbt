@@ -46,5 +46,5 @@ lazy val server =
       version            := "0.0.1",
       dockerBaseImage    := Docker.baseImage,
       dockerExposedPorts := Seq(8080),
-      libraryDependencies ++= http4s ++ scribe ++ grpc
+      libraryDependencies ++= http4s ++ scribe ++ grpc ++ prometheus
     )

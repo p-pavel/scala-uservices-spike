@@ -30,7 +30,7 @@ object Server extends IOApp.Simple:
     servers[IO] use { (_, echo) =>
       val logger   = Scribe[IO]
       val numCalls = 100_000
-      val calls    = Stream.range(1, numCalls - 1).evalMap(echo.echo("Hello", _))
+      val calls    = Stream.range(1, numCalls - 1).evalMap(echo.echo("Hello", _)>> Metrics[IO].incRequests)
       for
         _        <- logger.info(s"Got resources. Start issuing $numCalls calls.")
         duration <- calls.compile.drain.measureTime
