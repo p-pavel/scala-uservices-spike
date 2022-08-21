@@ -45,5 +45,6 @@ object Components {
   val prometheus = jArtifacts("io.prometheus", Versions.prometheus)(
   "simpleclient", 
   "simpleclient_hotspot",
+  "simpleclient_servlet", 
   )
 }
