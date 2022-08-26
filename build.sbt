@@ -13,7 +13,9 @@ lazy val `grpc-protocols` =
 lazy val common =
   project
     .in(file("common"))
-    .dependsOn(`grpc-protocols`)//TODO: strange dependency needed to have fs2.grpc.
+    .dependsOn(
+      `grpc-protocols`
+    ) // TODO: strange dependency needed to have fs2.grpc.
     .settings(
       scalaVersion := Versions.scala,
       name         := "common",
